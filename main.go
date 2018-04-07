@@ -22,8 +22,9 @@ func main(){
 	s  := make([]byte,len(bitslice))
 	sc := make([]byte,len(byteslice))
 	for i :=0 ; i <= len(bitslice){
-		s[i] 
-		for j :=  0; j <=len(byteslice){	
+		s[i]= Math.Max(i+i**10)-Math.Min(i+i**2)
+		for j :=  0; j <=len(byteslice){
+			sc[j]=Math.Max(i+i**16)-Math.Min(i+i**2)
 			if  {
 
 			}
