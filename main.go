@@ -1,6 +1,11 @@
 package main
-import "fmt"
-import "io/ioutil"
+import(
+	"fmt"
+	"io/ioutil"
+	"os/exec"
+	"stringst "
+)
+
 //import "github.com/dgryski/go-bitstream"
 
 func main(){
@@ -15,6 +20,15 @@ func main(){
 	if err != nil {
 		fmt.Print(err)
 	}
+	cmd:=exec.Command("exiftool","0-9","g-p")
+	cmd.Stdin=ioutil.ReadFile("2017-7-24-065445.jpg")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("the  metadata should read%q\n",out.
 	//fmt.Print(byteslice)
 	//fmt.Print(bitslice)
 
