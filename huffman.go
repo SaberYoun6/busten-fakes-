@@ -31,6 +31,7 @@ type Node struct {
 	leaf bool
 	code byte
 	count int
+	level int
 }
 
 type Huffman struct {
@@ -72,6 +73,7 @@ func printTree(n *Node) {
 	} else {
 		fmt.Print(" this is root ")
 	}
+	fmt.Print(" level is " + strconv.Itoa(n.level))
 	if n.leaf {
 		fmt.Println(" Code is " + strconv.Itoa(int(n.code)))
 	} else {
@@ -85,10 +87,11 @@ func printTree(n *Node) {
 	}
 }
 
-func newNode(l bool, c int) *Node {
+func newNode(l bool, c int, g int) *Node {
 	n := new(Node)
 	n.leaf = l
 	n.count = c
+	n.level = g
 	return n
 }
 
@@ -112,8 +115,8 @@ func addLevel(n *Node) {
 		addLevel(n.right)
 	}
 	if !n.leaf && n.left == nil && n.right == nil {
-		n.setLeft(newNode(false, n.count * 2 + 1))
-		n.setRight(newNode(false, n.count * 2 + 2))
+		n.setLeft(newNode(false, n.count * 2 + 1, n.level + 1))
+		n.setRight(newNode(false, n.count * 2 + 2, n.level + 1))
 	}
 }
 

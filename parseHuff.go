@@ -30,7 +30,7 @@ func parseJpeg(in []byte) Huffman {
 
 func parseHuffman(i int, in []byte) (int, Huffman) {
 	h := new(Huffman)
-	h.root = newNode(false, 0)
+	h.root = newNode(false, 0, 0)
 	var nVals [16]int
 	end := i + int(in[i+1] << 8 + in[i+2]) //the next two bytes are the length of the huffman table, including themselves
 	if (in[i+3] >> 4) == 0 {
@@ -39,8 +39,10 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 	h.identifier = int(in[i+3] & 0x0F)
 	i += 4
 
+	total := 0
 	for j := 0; j < 16; j++ {
 		nVals[j] = int(in[i])
+		total += nVals[j]
 		i++
 	}
 
@@ -52,6 +54,9 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 	cur := h.root
 	for ; i <= end; i++ {
 		//fmt.Println("i is " + strconv.Itoa(i) + " j is " + strconv.Itoa(j) + " k is " + strconv.Itoa(k) + " sum is " + strconv.Itoa(sum))
+		if j == total {
+			break
+		}
 		if sum == j {
 			k++
 			if k == 16 {
@@ -70,8 +75,6 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 			j++
 		}
 	}
-
-	printTree(h.root)
 
 	return i, *h
 }

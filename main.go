@@ -20,7 +20,7 @@ func main(){
 
 	huff := parseJpeg(byteslice)
 
-	fmt.Print(huff)
+	//fmt.Print(huff)
 	printTree(huff.root)
 }
 
