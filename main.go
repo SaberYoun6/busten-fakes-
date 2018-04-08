@@ -2,9 +2,9 @@ package main
 import(
 	"fmt"
 	"io/ioutil"
-	"os/exec"
-	"strings"
-	"bytes"
+	//"os/exec"
+	//"strings"
+	//"bytes"
 )
 
 //import "github.com/dgryski/go-bitstream"
