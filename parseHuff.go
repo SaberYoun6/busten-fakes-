@@ -46,6 +46,9 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 		if sum == j {
 			addLevel(h.root)
 			k++
+			if k == 16 {
+				k = 15
+			}
 			sum += nVals[k]
 		}
 

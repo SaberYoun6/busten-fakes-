@@ -36,7 +36,6 @@ type Huffman struct {
 	root *Node
 	dc bool //if true is DC.  defined by the high 4 bits of the 3rd byte after 0xffc4
 	identifier int //0 - 3, defined by the low bits of the 3rd byte after 0xffc4
-	highest int
 }
 
 //takes a bitreader, then returns the next code and the bitreader
@@ -97,7 +96,9 @@ func addLevel(n *Node) {
 }
 
 func nextRight(cur *Node, prev *Node) *Node {
-	if prev == nil {
+	if cur.parent == nil && prev == nil {
+		return leftmostChild(cur)
+	} else if prev == nil {
 		return nextRight(cur.parent, cur)
 	} else if cur.left == prev {
 		return leftmostChild(cur.right)
