@@ -16,7 +16,7 @@
 
 */
 
-package huffman
+package main
 
 import (
 	"github.com/dgryski/go-bitstream"
@@ -28,20 +28,19 @@ type Node struct {
 	left *Node
 	right *Node
 	leaf bool
-	code int
-	level int
+	code byte
 	count int
 }
 
 type Huffman struct {
-	root Node
+	root *Node
 	dc bool //if true is DC.  defined by the high 4 bits of the 3rd byte after 0xffc4
 	identifier int //0 - 3, defined by the low bits of the 3rd byte after 0xffc4
 	highest int
 }
 
 //takes a bitreader, then returns the next code and the bitreader
-func (h *Huffman) getCode(imageData *bitstream.BitReader) int {
+func (h *Huffman) getCode(imageData *bitstream.BitReader) byte {
 	n := h.root
 
 	for {
@@ -52,9 +51,9 @@ func (h *Huffman) getCode(imageData *bitstream.BitReader) int {
 		}
 
 		if b == bitstream.Zero {
-			n = *n.left
+			n = n.left
 		} else {
-			n = *n.right
+			n = n.right
 		}
 
 		if n.leaf {
@@ -65,10 +64,9 @@ func (h *Huffman) getCode(imageData *bitstream.BitReader) int {
 	return n.code
 }
 
-func newNode(l bool, g int, c int) *Node {
+func newNode(l bool, c int) *Node {
 	n := new(Node)
 	n.leaf = l
-	n.level = g
 	n.count = c
 	return n
 }
@@ -93,8 +91,8 @@ func addLevel(n *Node) {
 		addLevel(n.right)
 	}
 	if !n.leaf && n.left == nil && n.right == nil {
-		n.setLeft(newNode(false, n.level + 1, n.count * 2 + 1))
-		n.setRight(newNode(false, n.level + 1, n.count * 2 + 2))
+		n.setLeft(newNode(false, n.count * 2 + 1))
+		n.setRight(newNode(false, n.count * 2 + 2))
 	}
 }
 

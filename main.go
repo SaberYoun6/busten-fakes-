@@ -1,7 +1,7 @@
 package main
 import "fmt"
 import "io/ioutil"
-//todo: add this back in import "https://github.com/dgryski/go-bitstream"
+//import "github.com/dgryski/go-bitstream"
 
 func main(){
 	// this create two variable one of which is bitslice and they other ie err 
@@ -17,6 +17,10 @@ func main(){
 	}
 	fmt.Print(byteslice)
 	fmt.Print(bitslice)
+
+	huff := parseJpeg(byteslice)
+
+	fmt.Print(huff)
 }
 
 

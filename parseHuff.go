@@ -1,6 +1,6 @@
 /* This will take a byte slice, and then return an array of Huffman tables */
 
-package huffman
+package main
 
 func parseJpeg(in []byte) Huffman {
 	var huff Huffman
@@ -30,7 +30,7 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 	if (in[i+3] >> 4) == 0 {
 		h.dc = true
 	}
-	h.identifier = in[i+3] & 0x0F
+	h.identifier = int(in[i+3] & 0x0F)
 	i += 4
 
 	for j := 0; j < 16; j++ {
@@ -50,12 +50,12 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 		}
 
 		if nVals[k] != 0 {
-			cur = nextRight(h.root, nil)
+			cur = *nextRight(h.root, nil)
 			cur.code = in[i]
 			cur.leaf = true
 			j++
 		}
 	}
 
-	return i, h
+	return i, *h
 }
