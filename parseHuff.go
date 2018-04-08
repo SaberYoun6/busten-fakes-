@@ -14,10 +14,11 @@ func parseJpeg(in []byte) Huffman {
 				break
 			} else if in[i] == 0xC4 { //this is a Huffman table
 				i, huff = parseHuffman(i, in)
-				return huff
+				break
 			}
 		}
 	}
+	return huff
 
 }
 
@@ -25,7 +26,7 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 	h := new(Huffman)
 	h.root = newNode(false, 0)
 	var nVals [16]int
-	end = i + in[i+1] + in[i+2] //the next two bytes are the length of the huffman table, including themselves
+	end := i + int(in[i+1]) +int(in[i+2]) //the next two bytes are the length of the huffman table, including themselves
 	if (in[i+3] >> 4) == 0 {
 		h.dc = true
 	}
@@ -33,7 +34,7 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 	i += 4
 
 	for j := 0; j < 16; j++ {
-		nVals[j] = in[i]
+		nVals[j] = int(in[i])
 		i++
 	}
 
@@ -55,7 +56,6 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 			j++
 		}
 	}
-
 
 	return i, h
 }
