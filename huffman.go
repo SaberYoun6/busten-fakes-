@@ -21,6 +21,7 @@ package main
 import (
 	"github.com/dgryski/go-bitstream"
 	"fmt"
+	"strconv"
 )
 
 type Node struct {
@@ -63,6 +64,27 @@ func (h *Huffman) getCode(imageData *bitstream.BitReader) byte {
 	return n.code
 }
 
+func printTree(n *Node) {
+	fmt.Print("ID: " + strconv.Itoa(n.count))
+	//fmt.Print(n.leaf)
+	if n.parent != nil {
+		fmt.Print(" parent ID is " + strconv.Itoa(n.parent.count))
+	} else {
+		fmt.Print(" this is root ")
+	}
+	if n.leaf {
+		fmt.Println(" Code is " + strconv.Itoa(int(n.code)))
+	} else {
+		fmt.Println()
+	}
+	if (n.left != nil) {
+		printTree(n.left)
+	}
+	if (n.right != nil) {
+		printTree(n.right)
+	}
+}
+
 func newNode(l bool, c int) *Node {
 	n := new(Node)
 	n.leaf = l
@@ -96,6 +118,12 @@ func addLevel(n *Node) {
 }
 
 func nextRight(cur *Node, prev *Node) *Node {
+	//fmt.Print("Cur ID is " + strconv.Itoa(cur.count))
+	//if prev != nil {
+	//	fmt.Println(" Prev ID is " + strconv.Itoa(cur.count))
+	//} else {
+	//	fmt.Println(" no prev")
+	//}
 	if cur.parent == nil && prev == nil {
 		return leftmostChild(cur)
 	} else if prev == nil {
@@ -108,6 +136,7 @@ func nextRight(cur *Node, prev *Node) *Node {
 }
 
 func leftmostChild(n *Node) *Node {
+	//fmt.Println("Cur ID is " + strconv.Itoa(n.count))
 	if n.left != nil {
 		return leftmostChild(n.left)
 	} else {

@@ -1,11 +1,17 @@
 /* This will take a byte slice, and then return an array of Huffman tables */
 
 package main
+/*
+import (
+	"fmt"
+	"strconv"
+)*/
 
 func parseJpeg(in []byte) Huffman {
 	var huff Huffman
 
 	for i := range in {
+		//fmt.Println("i is: " + strconv.Itoa(i))
 		//If this bit and the next are a marker,
 		if in[i] == 0xFF {
 			i++
@@ -26,7 +32,7 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 	h := new(Huffman)
 	h.root = newNode(false, 0)
 	var nVals [16]int
-	end := i + int(in[i+1]) +int(in[i+2]) //the next two bytes are the length of the huffman table, including themselves
+	end := i + int(in[i+1] << 8 + in[i+2]) //the next two bytes are the length of the huffman table, including themselves
 	if (in[i+3] >> 4) == 0 {
 		h.dc = true
 	}
@@ -38,27 +44,34 @@ func parseHuffman(i int, in []byte) (int, Huffman) {
 		i++
 	}
 
-	sum := nVals[0]
+	//fmt.Println("i is at " + strconv.Itoa(i) + " end is " + strconv.Itoa(end))
+	//fmt.Println(nVals)
+	sum := 0
 	j := 0
-	k := 0
-	var cur Node
+	k := -1
+	cur := h.root
 	for ; i <= end; i++ {
+		//fmt.Println("i is " + strconv.Itoa(i) + " j is " + strconv.Itoa(j) + " k is " + strconv.Itoa(k) + " sum is " + strconv.Itoa(sum))
 		if sum == j {
-			addLevel(h.root)
 			k++
 			if k == 16 {
-				k = 15
+				break
 			}
+			addLevel(h.root)
+			//fmt.Println("Added level")
 			sum += nVals[k]
 		}
 
 		if nVals[k] != 0 {
-			cur = *nextRight(h.root, nil)
+			cur = nextRight(cur, nil)
 			cur.code = in[i]
 			cur.leaf = true
+			//fmt.Println("ID is " + strconv.Itoa(cur.count) + " and code is " + strconv.Itoa(int(cur.code)))
 			j++
 		}
 	}
+
+	printTree(h.root)
 
 	return i, *h
 }
