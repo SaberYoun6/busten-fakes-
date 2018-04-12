@@ -131,7 +131,7 @@ func nextRight(cur *Node, prev *Node) *Node {
 		return leftmostChild(cur)
 	} else if prev == nil {
 		return nextRight(cur.parent, cur)
-	} else if cur.left == prev {
+	} else if cur.left == prev || cur.parent == nil {
 		return leftmostChild(cur.right)
 	} else {
 		return nextRight(cur.parent, cur)
