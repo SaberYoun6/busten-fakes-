@@ -1,0 +1,7 @@
+1. Get an effective method of printing out trees
+2. Find out what all the codes mean
+3. Create a huffman tree from the image scan
+  -Note this requires knowing what the codes mean so you can toss out the data bits that aren't part of the tree
+4. Get a file composed of the standard huffman trees
+  -Pull it from images?
+5ish Use quantization tables to compare?

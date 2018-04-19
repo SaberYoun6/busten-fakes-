@@ -19,7 +19,8 @@ func parseJpeg(in []byte) []Huffman {
 			if in[i] == 0xDA { //if the marker is for start of scan, we have gone through all the metadata
 				break
 			} else if in[i] == 0xC4 { //this is a Huffman table
-				i, huff = parseHuffman(i, in)
+				i, hff = parseHuffman(i, in)
+				huff = append(huff, hff)
 			}
 		}
 	}
